@@ -12,7 +12,7 @@ const schemaO = z.object({
 type schemaO = z.infer<typeof schemaO>;
 
 export default function First() {
-  const { register, handleSubmit } = useForm<schemaO>({
+  const { register, handleSubmit, formState: { errors } } = useForm<schemaO>({
     resolver: zodResolver(schemaO),
   });
 
@@ -26,7 +26,7 @@ export default function First() {
   };
 
   return (
-    <form className="flex flex-wrap w-70 p-3 justify-between border" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-wrap w-70 p-3 justify-between border h-fit" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="1">Name: </label>
       <input type="text" {...register("name")} id="1" className="border rounded-md"/>
       <label htmlFor="2">Email: </label>
@@ -34,6 +34,9 @@ export default function First() {
       <label htmlFor="3">Password: </label>
       <input type="password" {...register("password")} id="3" className="border rounded-md"/>
       <button type="submit" className="border px-2 bg-amber-300 ">Submit</button>
+      {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+      {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+      {errors.password && <p className="text-red-500">{errors.password.message}</p>}
     </form>
   );
 }
